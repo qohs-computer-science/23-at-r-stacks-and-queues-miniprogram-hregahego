@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Queue;
 //Steven Wang, 12/10/24, Pd. 3, CP3
 class StackQueueMini {
 
@@ -11,7 +12,7 @@ class StackQueueMini {
         part1();
         part2();
         input.close();
-        
+
     } // end main
 
     public static void part1() {
@@ -42,40 +43,52 @@ class StackQueueMini {
 
     public static void part2() {
         
-        LinkedList<Integer> q_nums = new LinkedList<Integer>();
+        Queue<Integer> q_nums = new LinkedList<Integer>();
         System.out.println("Please enter 10 whole numbers: ");
         for (int i = 0; i < 10; i++) {
             q_nums.add(input.nextInt());
             input.nextLine();
         }
-
-        LinkedList<Integer> temp = new LinkedList<Integer>();
-        ListIterator<Integer> it = q_nums.listIterator();
         
-        while (it.hasNext()) {
-            int cur = it.next();
+        int i = 0;
+        Queue<Integer> temp = new LinkedList<Integer>();
+        while (i < 10) {
+            int cur = q_nums.remove();
             if (cur % 2 == 0) {
+                q_nums.add(cur);
+            } else {
                 temp.add(cur);
-                it.remove();
             }
+            i++;
         }
-
         
-        combine(temp, q_nums);
-        q_nums = temp;
+        q_nums = combine(q_nums, temp);
+        // Queue<Integer> even = new LinkedList<Integer>();
+        // Queue<Integer> odd = new LinkedList<Integer>();
+
+        // while (!q_nums.isEmpty()) {
+        //     int cur = q_nums.remove();
+        //     if (cur % 2 == 0) {
+        //         even.add(cur);
+        //     } else {
+        //         odd.add(cur);
+        //     }
+        // }
+        
+        // q_nums = combine(even, odd);
 
         System.out.println("front " + q_nums + " back");
 
     } //end part 2
 
-    private static void combine(LinkedList<Integer> l1, LinkedList<Integer> l2) {
-        ListIterator<Integer> it1 = l1.listIterator();
-        ListIterator<Integer> it2 = l2.listIterator();
-        while (it1.hasNext()) {
-            it1.next();
+    private static Queue<Integer> combine(Queue<Integer> l1, Queue<Integer> l2) {
+        Queue<Integer> result = new LinkedList<Integer>();
+        while (!l1.isEmpty()) {
+            result.add(l1.remove());
         }
-        while (it2.hasNext()) {
-            it1.add(it2.next());
+        while (!l2.isEmpty()) {
+            result.add(l2.remove());
         }
+        return result;
     } //end combine
 } // end class
